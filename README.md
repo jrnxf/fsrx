@@ -13,16 +13,14 @@ Version](https://img.shields.io/crates/v/brx)](https://crates.io/crates/brx)
 [![Github
 Stars](https://img.shields.io/github/stars/coloradocolby/brx)](https://github.com/coloradocolby/brx/stargazers)
 
-![sample](./assets/sample.png)
-
-> — <cite>Renato Casutt</cite>
+![demo](https://github.com/coloradocolby/assets/raw/main/brx/demo.gif)
 
 ## Usage
 
 For detailed usage run `brx -h`.
 
 ```
-brx 0.1.0
+brx 0.1.1
 Colby Thomas <coloradocolby@gmail.com>
 📚(b)ionic (r)eading e(x)change
 flow state bionic reading in the terminal
