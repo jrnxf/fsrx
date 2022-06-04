@@ -1,4 +1,5 @@
 # brx
+
 📚(**b**)ionic (**r**)eading e(**x**)change – flow state [bionic
 reading](https://bionic-reading.com/) in the terminal
 
@@ -14,17 +15,8 @@ Stars](https://img.shields.io/github/stars/coloradocolby/brx)](https://github.co
 
 ![sample](./assets/sample.png)
 
-> -- <cite>Renato Casutt</cite>
+> — <cite>Renato Casutt</cite>
 
-## Installation
-
-### Cargo
-```sh
-$ cargo install brx
-```
-
-### Homebrew
-incoming @ [homebrew-brx](https://github.com/coloradocolby/homebrew-brx)
 ## Usage
 
 For detailed usage run `brx -h`.
@@ -50,11 +42,25 @@ OPTIONS:
 ```
 
 ### Examples
+
 ```sh
 $ echo "the quick brown fox jumps over the lazy dog" | brx
 $ brx input.txt | less
 $ brx -c -fh -sl input.txt | less
 ```
+
+## Installation
+
+### Cargo
+
+```sh
+$ cargo install brx
+```
+
+### Homebrew
+
+incoming @ [homebrew-brx](https://github.com/coloradocolby/homebrew-brx)
+
 ## Contributing
 
 All contributions are greatly appreciated. Please keep in mind this
