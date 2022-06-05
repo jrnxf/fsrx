@@ -45,7 +45,7 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
 name = "brx"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "ansi_term",
  "atty",

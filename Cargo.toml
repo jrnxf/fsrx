@@ -1,6 +1,6 @@
 [package]
 name = "brx"
-version = "0.1.1"
+version = "0.1.2"
 description = "📚 flow state bionic reading in the terminal"
 edition = "2021"
 readme = "README.md"

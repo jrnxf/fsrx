@@ -20,7 +20,7 @@ Stars](https://img.shields.io/github/stars/coloradocolby/brx)](https://github.co
 For detailed usage run `brx -h`.
 
 ```
-brx 0.1.1
+brx 0.1.2
 Colby Thomas <coloradocolby@gmail.com>
 📚(b)ionic (r)eading e(x)change
 flow state bionic reading in the terminal

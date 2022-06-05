@@ -1,9 +1,9 @@
 use ansi_term::Style;
+
 use atty::Stream;
 use clap::{ErrorKind, IntoApp, Parser};
-use regex::{Captures, Regex};
+use regex::Regex;
 use std::{
-    borrow::Cow,
     fs::File,
     io::{self, BufRead},
     path::Path,
@@ -43,7 +43,7 @@ enum Intensity {
 
 fn main() -> io::Result<()> {
     let cli = Cli::parse();
-    let re = Regex::new(r"\p{L}+").unwrap();
+    let re = Regex::new(r"[\w\\']+").unwrap();
     let mut saccade_iter = -1;
     let saccade_mode = match &cli.saccade {
         Intensity::H => 1,
@@ -54,17 +54,8 @@ fn main() -> io::Result<()> {
         if let Ok(lines) = read_lines(cli.path.as_ref().unwrap().as_str()) {
             lines.for_each(|line| {
                 if let Ok(line) = line {
-                    let styled_text = re.replace_all(line.as_str(), |cap: &Captures| {
-                        saccade_iter += 1;
-                        style_capture(
-                            line.as_str(),
-                            cap,
-                            &cli.fixation,
-                            cli.contrast,
-                            saccade_iter % saccade_mode == 0,
-                        )
-                    });
-                    println!("{}", styled_text)
+                    let styled_line = style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode);
+                    println!("{}", styled_line);
                 }
             });
         } else {
@@ -74,17 +65,8 @@ fn main() -> io::Result<()> {
         let mut line = String::new();
         while io::stdin().read_line(&mut line)? != 0 {
             let line = std::mem::take(&mut line);
-            let styled_line = re.replace_all(line.as_str(), |cap: &Captures| {
-                saccade_iter += 1;
-                style_capture(
-                    line.as_str(),
-                    cap,
-                    &cli.fixation,
-                    cli.contrast,
-                    saccade_iter % saccade_mode == 0,
-                )
-            });
-            print!("{}", styled_line)
+            let styled_line = style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode);
+            print!("{}", styled_line);
         }
     } else {
         Cli::command()
@@ -98,16 +80,61 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn style_capture<'a>(
-    input: &'a str,
-    cap: &Captures,
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
+}
+
+fn style_line(
+    unstyled_line: &str,
+    re: &Regex,
+    cli: &Cli,
+    saccade_iter: &mut i32,
+    saccade_mode: usize,
+) -> String {
+    let mut last_end_idx: usize = 0;
+    let mut styled_line = "".to_owned();
+    for reg_match in re.find_iter(unstyled_line) {
+        let start_idx = reg_match.start();
+        let end_idx = reg_match.end();
+        styled_line.push_str(
+            style_substr(
+                &unstyled_line[last_end_idx..start_idx],
+                false,
+                &cli.fixation,
+                cli.contrast,
+                *saccade_iter % (saccade_mode as i32) == 0,
+            )
+            .as_str(),
+        );
+
+        *saccade_iter += 1;
+        styled_line.push_str(
+            style_substr(
+                &unstyled_line[start_idx..end_idx],
+                true,
+                &cli.fixation,
+                cli.contrast,
+                *saccade_iter % (saccade_mode as i32) == 0,
+            )
+            .as_str(),
+        );
+        last_end_idx = end_idx;
+    }
+    styled_line
+}
+
+fn style_substr(
+    substr: &str,
+    should_process: bool,
     fixation: &Intensity,
     contrast: bool,
     saccade_hit: bool,
-) -> Cow<'a, str> {
-    let range = cap.get(0).unwrap().range();
-    let current_word = &input[range];
-    let mid_point = (current_word.len() as f32
+) -> String {
+    let mid_point = (substr.len() as f32
         * match &fixation {
             Intensity::H => 0.7,
             Intensity::M => 0.5,
@@ -115,13 +142,13 @@ fn style_capture<'a>(
         })
     .ceil() as usize;
 
-    let styled_text = UnicodeSegmentation::graphemes(current_word, true)
+    let styled_text = UnicodeSegmentation::graphemes(substr, true)
         .collect::<Vec<&str>>()
         .iter()
         .enumerate()
         .map(|(i, x)| -> String {
             let curr_char = x.to_owned();
-            if i < mid_point && saccade_hit {
+            if i < mid_point && saccade_hit && should_process {
                 return if contrast {
                     format!("{}", Style::new().bold().paint(curr_char))
                 } else {
@@ -134,13 +161,5 @@ fn style_capture<'a>(
         .collect::<Vec<String>>()
         .join("");
 
-    Cow::Owned(styled_text)
-}
-
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
+    styled_text
 }
