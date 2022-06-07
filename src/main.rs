@@ -54,20 +54,24 @@ fn main() -> io::Result<()> {
         if let Ok(lines) = read_lines(cli.path.as_ref().unwrap().as_str()) {
             lines.for_each(|line| {
                 if let Ok(line) = line {
-                    let styled_line = style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode);
-                    println!("{}", styled_line);
+                    println!(
+                        "{}",
+                        style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode)
+                    );
                 }
             });
         } else {
             Cli::command().error(ErrorKind::Io, "File not found").exit();
         }
     } else if !atty::is(Stream::Stdin) {
-        let mut line = String::new();
-        while io::stdin().read_line(&mut line)? != 0 {
-            let line = std::mem::take(&mut line);
-            let styled_line = style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode);
-            print!("{}", styled_line);
-        }
+        io::stdin().lock().lines().for_each(|line| {
+            if let Ok(line) = line {
+                println!(
+                    "{}",
+                    style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode)
+                );
+            }
+        })
     } else {
         Cli::command()
             .error(
@@ -97,45 +101,36 @@ fn style_line(
 ) -> String {
     let mut last_end_idx: usize = 0;
     let mut styled_line = "".to_owned();
+
     for reg_match in re.find_iter(unstyled_line) {
         let start_idx = reg_match.start();
         let end_idx = reg_match.end();
         styled_line.push_str(
-            style_substr(
-                &unstyled_line[last_end_idx..start_idx],
-                false,
-                &cli.fixation,
-                cli.contrast,
-                *saccade_iter % (saccade_mode as i32) == 0,
-            )
-            .as_str(),
+            style_substr(&unstyled_line[last_end_idx..start_idx], cli, false, false).as_str(),
         );
 
         *saccade_iter += 1;
+        let saccade_hit = *saccade_iter % (saccade_mode as i32) == 0;
         styled_line.push_str(
-            style_substr(
-                &unstyled_line[start_idx..end_idx],
-                true,
-                &cli.fixation,
-                cli.contrast,
-                *saccade_iter % (saccade_mode as i32) == 0,
-            )
-            .as_str(),
+            style_substr(&unstyled_line[start_idx..end_idx], cli, true, saccade_hit).as_str(),
         );
         last_end_idx = end_idx;
     }
+    styled_line.push_str(
+        style_substr(
+            &unstyled_line[last_end_idx..unstyled_line.len()],
+            cli,
+            false,
+            false,
+        )
+        .as_str(),
+    );
     styled_line
 }
 
-fn style_substr(
-    substr: &str,
-    should_process: bool,
-    fixation: &Intensity,
-    contrast: bool,
-    saccade_hit: bool,
-) -> String {
+fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool) -> String {
     let mid_point = (substr.len() as f32
-        * match &fixation {
+        * match (*cli).fixation {
             Intensity::H => 0.7,
             Intensity::M => 0.5,
             Intensity::L => 0.3,
@@ -149,7 +144,7 @@ fn style_substr(
         .map(|(i, x)| -> String {
             let curr_char = x.to_owned();
             if i < mid_point && saccade_hit && should_process {
-                return if contrast {
+                return if (*cli).contrast {
                     format!("{}", Style::new().bold().paint(curr_char))
                 } else {
                     String::from(curr_char)

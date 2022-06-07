@@ -25,7 +25,7 @@ worldwide ❤️*
 For detailed usage run `fsrx -h`.
 
 ```
-fsrx 0.2.0
+fsrx 0.2.1
 Colby Thomas <coloradocolby@gmail.com>
 📚(f)low (s)tate (r)eading e(x)change
 flow state reading in the terminal
@@ -49,7 +49,7 @@ OPTIONS:
 ```sh
 $ echo "the quick brown fox jumps over the lazy dog" | fsrx
 $ fsrx input.txt | less
-$ fsrx -c -fh -sl input.txt | less
+$ fmt -w60 input.txt | fsrx -c -fh -sl
 ```
 
 ## Installation
