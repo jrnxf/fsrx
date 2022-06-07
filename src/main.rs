@@ -14,7 +14,7 @@ use unicode_segmentation::UnicodeSegmentation;
 #[clap(
     author = "Colby Thomas <coloradocolby@gmail.com>",
     version,
-    about = "📚(b)ionic (r)eading e(x)change\nflow state bionic reading in the terminal"
+    about = "📚(f)low (s)tate (r)eading e(x)change\nflow state reading in the terminal"
 )]
 struct Cli {
     /// path to file (or supply input via stdin)

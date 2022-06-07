@@ -1,19 +1,19 @@
 [package]
-name = "brx"
-version = "0.1.2"
-description = "📚 flow state bionic reading in the terminal"
+name = "fsrx"
+version = "0.2.0"
+description = "📚 flow state reading in the terminal"
 edition = "2021"
 readme = "README.md"
-repository = "https://github.com/coloradocolby/brx.git"
-homepage = "https://github.com/coloradocolby/brx"
+repository = "https://github.com/coloradocolby/fsrx.git"
+homepage = "https://github.com/coloradocolby/fsrx"
 license = "MIT"
 authors = ["Colby Thomas <coloradocolby@gmail.com>"]
 exclude = ["assets/*", ".github/*",]
-keywords = ["bionic", "reading", "utility", "terminal", "cli" ]
+keywords = ["reading", "utility", "terminal", "cli", "fast" ]
 
 [dependencies]
 ansi_term = "0.12.1"
 regex = "1.5.6"
 unicode-segmentation = "1.9.0"
 clap = { version = "3.1.18", features = ["derive"] }
-atty = "0.2"
+atty = "0.2.14"

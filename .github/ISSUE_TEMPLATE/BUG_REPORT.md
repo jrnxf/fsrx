@@ -44,7 +44,7 @@ Add a description of the systems where you are observing the issue.
 - OS:
 - Terminal Emulator:
 - Font:
-- `brx` version:
+- `fsrx` version:
 
 ## Additional context
 

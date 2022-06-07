@@ -44,17 +44,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
-name = "brx"
-version = "0.1.2"
-dependencies = [
- "ansi_term",
- "atty",
- "clap",
- "regex",
- "unicode-segmentation",
-]
-
-[[package]]
 name = "clap"
 version = "3.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -91,6 +80,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a37c35f1112dad5e6e0b1adaff798507497a18fceeb30cceb3bae7d1427b9213"
 dependencies = [
  "os_str_bytes",
+]
+
+[[package]]
+name = "fsrx"
+version = "0.2.0"
+dependencies = [
+ "ansi_term",
+ "atty",
+ "clap",
+ "regex",
+ "unicode-segmentation",
 ]
 
 [[package]]

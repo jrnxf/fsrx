@@ -1,32 +1,37 @@
-# brx
+# fsrx
 
-📚(**b**)ionic (**r**)eading e(**x**)change – flow state [bionic
-reading](https://bionic-reading.com/) in the terminal
+📚(**f**)low (**s**)tate (**r**)eading e(**x**)change – flow state
+reading in the terminal
+
 
 [![GitHub CI
-Workflow](https://github.com/coloradocolby/brx/actions/workflows/ci.yml/badge.svg)](https://github.com/coloradocolby/brx/actions/workflows/ci.yml)
+Workflow](https://github.com/coloradocolby/fsrx/actions/workflows/ci.yml/badge.svg)](https://github.com/coloradocolby/fsrx/actions/workflows/ci.yml)
 [![GitHub Deploy
-Workflow](https://github.com/coloradocolby/brx/actions/workflows/deploy.yml/badge.svg)](https://github.com/coloradocolby/brx/actions/workflows/deploy.yml)
+Workflow](https://github.com/coloradocolby/fsrx/actions/workflows/deploy.yml/badge.svg)](https://github.com/coloradocolby/fsrx/actions/workflows/deploy.yml)
 [![License](https://img.shields.io/badge/License-MIT-default.svg)](./LICENSE.md)
 [![Crate
-Version](https://img.shields.io/crates/v/brx)](https://crates.io/crates/brx)
+Version](https://img.shields.io/crates/v/fsrx)](https://crates.io/crates/fsrx)
 [![Github
-Stars](https://img.shields.io/github/stars/coloradocolby/brx)](https://github.com/coloradocolby/brx/stargazers)
+Stars](https://img.shields.io/github/stars/coloradocolby/fsrx)](https://github.com/coloradocolby/fsrx/stargazers)
 
-![demo](https://github.com/coloradocolby/assets/raw/main/brx/demo.gif)
+![demo](https://github.com/coloradocolby/assets/raw/main/fsrx/demo.gif)
 
+*Inspired by **(but not affiliated with)** Renato Casutt and his
+revolutionary work on [Bionic Reading](https://bionic-reading.com).
+Please consider supporting his mission to make Bionic Reading available
+worldwide ❤️*
 ## Usage
 
-For detailed usage run `brx -h`.
+For detailed usage run `fsrx -h`.
 
 ```
-brx 0.1.2
+fsrx 0.2.0
 Colby Thomas <coloradocolby@gmail.com>
-📚(b)ionic (r)eading e(x)change
-flow state bionic reading in the terminal
+📚(f)low (s)tate (r)eading e(x)change
+flow state reading in the terminal
 
 USAGE:
-    brx [OPTIONS] [PATH]
+    fsrx [OPTIONS] [PATH]
 
 ARGS:
     <PATH>    path to file (or supply input via stdin)
@@ -42,9 +47,9 @@ OPTIONS:
 ### Examples
 
 ```sh
-$ echo "the quick brown fox jumps over the lazy dog" | brx
-$ brx input.txt | less
-$ brx -c -fh -sl input.txt | less
+$ echo "the quick brown fox jumps over the lazy dog" | fsrx
+$ fsrx input.txt | less
+$ fsrx -c -fh -sl input.txt | less
 ```
 
 ## Installation
@@ -52,12 +57,13 @@ $ brx -c -fh -sl input.txt | less
 ### Cargo
 
 ```sh
-$ cargo install brx
+$ cargo install fsrx
 ```
 
 ### Homebrew
 
-incoming @ [homebrew-brx](https://github.com/coloradocolby/homebrew-brx)
+incoming @
+[homebrew-fsrx](https://github.com/coloradocolby/homebrew-fsrx)
 
 ## Contributing
 
@@ -65,9 +71,9 @@ All contributions are greatly appreciated. Please keep in mind this
 project is meant to be as lightweight as possible, so not every idea
 will be considered.
 
-If you have a suggestion that would make brx better, please fork the
+If you have a suggestion that would make fsrx better, please fork the
 repo and create a [pull
-request](https://github.com/coloradocolby/brx/pulls). You can also
+request](https://github.com/coloradocolby/fsrx/pulls). You can also
 simply open an issue and select `Feature Request`
 
 1. Fork the repo
@@ -77,8 +83,8 @@ simply open an issue and select `Feature Request`
 5. Push to your branch (`git push origin [your_username]/xyz`)
 6. Fill out pull request template
 
-See the [open issues](https://github.com/coloradocolby/brx/issues) for a
-full list of proposed features (and known issues).
+See the [open issues](https://github.com/coloradocolby/fsrx/issues) for
+a full list of proposed features (and known issues).
 
 ## License
 
