@@ -25,7 +25,7 @@ worldwide ❤️*
 For detailed usage run `fsrx -h`.
 
 ```
-fsrx 0.2.1
+fsrx 1.0.0
 Colby Thomas <coloradocolby@gmail.com>
 📚(f)low (s)tate (r)eading e(x)change
 flow state reading in the terminal

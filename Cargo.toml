@@ -1,6 +1,6 @@
 [package]
 name = "fsrx"
-version = "0.2.1"
+version = "1.0.0"
 description = "📚 flow state reading in the terminal"
 edition = "2021"
 readme = "README.md"
