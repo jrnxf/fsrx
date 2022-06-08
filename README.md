@@ -3,7 +3,6 @@
 📚(**f**)low (**s**)tate (**r**)eading e(**x**)change – flow state
 reading in the terminal
 
-
 [![GitHub CI
 Workflow](https://github.com/coloradocolby/fsrx/actions/workflows/ci.yml/badge.svg)](https://github.com/coloradocolby/fsrx/actions/workflows/ci.yml)
 [![GitHub Deploy
@@ -16,10 +15,9 @@ Stars](https://img.shields.io/github/stars/coloradocolby/fsrx)](https://github.c
 
 ![demo](https://github.com/coloradocolby/assets/raw/main/fsrx/demo.gif)
 
-*Inspired by **(but not affiliated with)** Renato Casutt and his
-revolutionary work on [Bionic Reading](https://bionic-reading.com).
-Please consider supporting his mission to make Bionic Reading available
-worldwide ❤️*
+_Inspired by **(but not affiliated with)** Renato Casutt and his
+revolutionary work on [Bionic Reading](https://bionic-reading.com)._
+
 ## Usage
 
 For detailed usage run `fsrx -h`.
@@ -64,6 +62,10 @@ $ cargo install fsrx
 
 incoming @
 [homebrew-fsrx](https://github.com/coloradocolby/homebrew-fsrx)
+
+### Arch Linux
+
+`fsrx` via the AUR
 
 ## Contributing
 
