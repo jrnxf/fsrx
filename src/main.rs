@@ -12,7 +12,7 @@ use unicode_segmentation::UnicodeSegmentation;
 
 #[derive(Parser, Debug)]
 #[clap(
-    author = "Colby Thomas <coloradocolby@gmail.com>",
+    author = "Colby Thomas <thatvegandev@gmail.com>",
     version,
     about = "📚(f)low (s)tate (r)eading e(x)change\nflow state reading in the terminal"
 )]
