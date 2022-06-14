@@ -67,6 +67,10 @@ incoming @
 
 `fsrx` via the AUR
 
+### NetBSD
+
+`fsrx` from the [official repositories](https://pkgsrc.se/textproc/fsrx)
+
 ## Contributing
 
 All contributions are greatly appreciated. Please keep in mind this
