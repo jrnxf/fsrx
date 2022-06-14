@@ -2,7 +2,6 @@ use ansi_term::Style;
 
 use atty::Stream;
 use clap::{ErrorKind, IntoApp, Parser};
-use regex::Regex;
 use std::{
     fs::File,
     io::{self, BufRead},
@@ -43,7 +42,6 @@ enum Intensity {
 
 fn main() -> io::Result<()> {
     let cli = Cli::parse();
-    let re = Regex::new(r"[\w\\']+").unwrap();
     let mut saccade_iter = -1;
     let saccade_mode = match &cli.saccade {
         Intensity::H => 1,
@@ -56,7 +54,7 @@ fn main() -> io::Result<()> {
                 if let Ok(line) = line {
                     println!(
                         "{}",
-                        style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode)
+                        style_line(&line, &cli, &mut saccade_iter, saccade_mode)
                     );
                 }
             });
@@ -68,7 +66,7 @@ fn main() -> io::Result<()> {
             if let Ok(line) = line {
                 println!(
                     "{}",
-                    style_line(&line, &re, &cli, &mut saccade_iter, saccade_mode)
+                    style_line(&line, &cli, &mut saccade_iter, saccade_mode)
                 );
             }
         })
@@ -94,7 +92,6 @@ where
 
 fn style_line(
     unstyled_line: &str,
-    re: &Regex,
     cli: &Cli,
     saccade_iter: &mut i32,
     saccade_mode: usize,
@@ -102,9 +99,9 @@ fn style_line(
     let mut last_end_idx: usize = 0;
     let mut styled_line = "".to_owned();
 
-    for reg_match in re.find_iter(unstyled_line) {
-        let start_idx = reg_match.start();
-        let end_idx = reg_match.end();
+    for word_match in unstyled_line.unicode_word_indices() {
+        let start_idx = word_match.0;
+        let end_idx = start_idx + word_match.1.len();
         styled_line.push_str(
             style_substr(&unstyled_line[last_end_idx..start_idx], cli, false, false).as_str(),
         );
@@ -129,7 +126,10 @@ fn style_line(
 }
 
 fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool) -> String {
-    let mid_point = (substr.len() as f32
+    let graphemes = UnicodeSegmentation::graphemes(substr, true)
+        .collect::<Vec<&str>>();
+
+    let mid_point = (graphemes.len() as f32
         * match (*cli).fixation {
             Intensity::H => 0.7,
             Intensity::M => 0.5,
@@ -137,8 +137,7 @@ fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool
         })
     .ceil() as usize;
 
-    let styled_text = UnicodeSegmentation::graphemes(substr, true)
-        .collect::<Vec<&str>>()
+    let styled_text = graphemes
         .iter()
         .enumerate()
         .map(|(i, x)| -> String {
