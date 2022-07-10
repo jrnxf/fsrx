@@ -23,7 +23,7 @@ revolutionary work on [Bionic Reading](https://bionic-reading.com)._
 For detailed usage run `fsrx -h`.
 
 ```
-fsrx 1.0.1
+fsrx 1.0.2
 Colby Thomas <thatvegandev@gmail.com>
 📚(f)low (s)tate (r)eading e(x)change
 flow state reading in the terminal

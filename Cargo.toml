@@ -1,6 +1,6 @@
 [package]
 name = "fsrx"
-version = "1.0.1"
+version = "1.0.2"
 description = "📚 flow state reading in the terminal"
 edition = "2021"
 readme = "README.md"
@@ -13,7 +13,7 @@ keywords = ["reading", "utility", "terminal", "cli", "fast"]
 
 [dependencies]
 ansi_term = "0.12.1"
-regex = "1.5.6"
+regex = "1.6.0"
 unicode-segmentation = "1.9.0"
-clap = { version = "3.1.18", features = ["derive"] }
+clap = { version = "3.2.8", features = ["derive"] }
 atty = "0.2.14"
