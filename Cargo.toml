@@ -7,13 +7,27 @@ readme = "README.md"
 repository = "https://github.com/thatvegandev/fsrx.git"
 homepage = "https://github.com/thatvegandev/fsrx"
 license = "MIT"
-authors = ["Colby Thomas <thatvegandev@gmail.com>"]
+authors = ["Colby Thomas <thatvegandev@gmail.com>", "John Warren <john@thebestjohn.com>"]
 exclude = [".github/*"]
 keywords = ["reading", "utility", "terminal", "cli", "fast"]
+default_features = ["cli"]
+
+[features]
+default = ["cli"]
+cli = ["clap", "atty"]
+
+[lib]
+name = "fsrx_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fsrx"
+path = "src/main.rs"
+required-features = ["cli"]
 
 [dependencies]
+clap = { version = "3.2.19", features = ["derive"], optional = true}
+atty = { version = "0.2.14", optional = true}
 ansi_term = "0.12.1"
 regex = "1.6.0"
 unicode-segmentation = "1.9.0"
-clap = { version = "3.2.8", features = ["derive"] }
-atty = "0.2.14"
