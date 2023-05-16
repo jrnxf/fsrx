@@ -23,7 +23,7 @@ revolutionary work on [Bionic Reading](https://bionic-reading.com)._
 For detailed usage run `fsrx -h`.
 
 ```
-fsrx 1.0.2
+fsrx 1.0.3
 Colby Thomas <thatvegandev@gmail.com>
 📚(f)low (s)tate (r)eading e(x)change
 flow state reading in the terminal
@@ -40,6 +40,7 @@ OPTIONS:
     -h, --help                   Print help information
     -s, --saccade <SACCADE>      saccade intensity [default: h] [possible values: l, m, h]
     -V, --version                Print version information
+    -w, --wipe			 Clear screen before printing output
 ```
 
 ### Examples
