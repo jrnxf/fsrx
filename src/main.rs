@@ -25,6 +25,10 @@ struct Cli {
     #[clap(short, long)]
     contrast: bool,
 
+    /// Clear screen before printing output
+    #[clap(short, long)]
+    wipe: bool,
+
     /// fixation intensity
     #[clap(short, long, arg_enum, default_value_t = Intensity::M)]
     fixation: Intensity,
@@ -50,6 +54,9 @@ fn main() -> io::Result<()> {
         Intensity::M => 2,
         Intensity::L => 3,
     };
+    if cli.wipe {
+        print!("\x1B[2J\x1B[1;1H");
+    }
     if cli.path.is_some() {
         if let Ok(lines) = read_lines(cli.path.as_ref().unwrap().as_str()) {
             lines.for_each(|line| {
