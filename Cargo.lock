@@ -84,7 +84,7 @@ dependencies = [
 
 [[package]]
 name = "fsrx"
-version = "1.0.2"
+version = "1.0.3"
 dependencies = [
  "ansi_term",
  "atty",
