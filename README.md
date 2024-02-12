@@ -71,6 +71,10 @@ incoming @
 
 `fsrx` from the [official repositories](https://pkgsrc.se/textproc/fsrx)
 
+### Nix
+
+`fsrx` from [nixpkgs unstable](https://search.nixos.org/packages?channel=unstable&query=fsrx)
+
 ## Contributing
 
 All contributions are greatly appreciated. Please keep in mind this
