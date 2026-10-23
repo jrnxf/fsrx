@@ -52,16 +52,17 @@ $ fmt -w60 input.txt | fsrx -c -fh -sl
 
 ## Installation
 
+### Homebrew
+
+```sh
+$ brew install jrnxf/tap/fsrx
+```
+
 ### Cargo
 
 ```sh
 $ cargo install fsrx
 ```
-
-### Homebrew
-
-incoming @
-[homebrew-fsrx](https://github.com/jrnxf/homebrew-fsrx)
 
 ### Arch Linux
 
