@@ -5,8 +5,8 @@ reading in the terminal
 
 [![GitHub CI
 Workflow](https://github.com/jrnxf/fsrx/actions/workflows/ci.yml/badge.svg)](https://github.com/jrnxf/fsrx/actions/workflows/ci.yml)
-[![GitHub Deploy
-Workflow](https://github.com/jrnxf/fsrx/actions/workflows/deploy.yml/badge.svg)](https://github.com/jrnxf/fsrx/actions/workflows/deploy.yml)
+[![GitHub Release
+Workflow](https://github.com/jrnxf/fsrx/actions/workflows/release.yml/badge.svg)](https://github.com/jrnxf/fsrx/actions/workflows/release.yml)
 [![License](https://img.shields.io/badge/License-MIT-default.svg)](./LICENSE.md)
 [![Crate
 Version](https://img.shields.io/crates/v/fsrx)](https://crates.io/crates/fsrx)
