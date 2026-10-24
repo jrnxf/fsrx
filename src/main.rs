@@ -126,8 +126,7 @@ fn style_line(
 }
 
 fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool) -> String {
-    let graphemes = UnicodeSegmentation::graphemes(substr, true)
-        .collect::<Vec<&str>>();
+    let graphemes = UnicodeSegmentation::graphemes(substr, true).collect::<Vec<&str>>();
 
     let mid_point = (graphemes.len() as f32
         * match (*cli).fixation {
