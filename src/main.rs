@@ -59,7 +59,8 @@ fn main() -> io::Result<()> {
     };
 
     let mut out = io::BufWriter::new(io::stdout().lock());
-    match write_styled_lines(lines, &cli, &mut out) {
+    let flush_each_line = cli.path.is_none();
+    match write_styled_lines(lines, &cli, &mut out, flush_each_line) {
         // the reader went away (e.g. `fsrx file | head`), so stop quietly
         Err(e) if e.kind() == io::ErrorKind::BrokenPipe => Ok(()),
         result => result,
@@ -70,6 +71,7 @@ fn write_styled_lines(
     lines: impl Iterator<Item = io::Result<String>>,
     cli: &Cli,
     out: &mut impl Write,
+    flush_each_line: bool,
 ) -> io::Result<()> {
     let mut saccade_iter = -1;
     let saccade_mode = match &cli.saccade {
@@ -83,6 +85,9 @@ fn write_styled_lines(
             "{}",
             style_line(&line, cli, &mut saccade_iter, saccade_mode)
         )?;
+        if flush_each_line {
+            out.flush()?;
+        }
     }
     out.flush()
 }
