@@ -4,7 +4,7 @@ use atty::Stream;
 use clap::{ErrorKind, IntoApp, Parser};
 use std::{
     fs::File,
-    io::{self, BufRead},
+    io::{self, BufRead, Write},
     path::Path,
 };
 use unicode_segmentation::UnicodeSegmentation;
@@ -42,34 +42,13 @@ enum Intensity {
 
 fn main() -> io::Result<()> {
     let cli = Cli::parse();
-    let mut saccade_iter = -1;
-    let saccade_mode = match &cli.saccade {
-        Intensity::H => 1,
-        Intensity::M => 2,
-        Intensity::L => 3,
-    };
-    if cli.path.is_some() {
-        if let Ok(lines) = read_lines(cli.path.as_ref().unwrap().as_str()) {
-            lines.for_each(|line| {
-                if let Ok(line) = line {
-                    println!(
-                        "{}",
-                        style_line(&line, &cli, &mut saccade_iter, saccade_mode)
-                    );
-                }
-            });
-        } else {
-            Cli::command().error(ErrorKind::Io, "File not found").exit();
+    let lines: Box<dyn Iterator<Item = io::Result<String>>> = if let Some(path) = &cli.path {
+        match read_lines(path) {
+            Ok(lines) => Box::new(lines),
+            Err(_) => Cli::command().error(ErrorKind::Io, "File not found").exit(),
         }
     } else if !atty::is(Stream::Stdin) {
-        io::stdin().lock().lines().for_each(|line| {
-            if let Ok(line) = line {
-                println!(
-                    "{}",
-                    style_line(&line, &cli, &mut saccade_iter, saccade_mode)
-                );
-            }
-        })
+        Box::new(io::stdin().lock().lines())
     } else {
         Cli::command()
             .error(
@@ -77,9 +56,35 @@ fn main() -> io::Result<()> {
                 "No input provided. Text must be provided via stdin or the path to a file.",
             )
             .exit();
-    }
+    };
 
-    Ok(())
+    let mut out = io::BufWriter::new(io::stdout().lock());
+    match write_styled_lines(lines, &cli, &mut out) {
+        // the reader went away (e.g. `fsrx file | head`), so stop quietly
+        Err(e) if e.kind() == io::ErrorKind::BrokenPipe => Ok(()),
+        result => result,
+    }
+}
+
+fn write_styled_lines(
+    lines: impl Iterator<Item = io::Result<String>>,
+    cli: &Cli,
+    out: &mut impl Write,
+) -> io::Result<()> {
+    let mut saccade_iter = -1;
+    let saccade_mode = match &cli.saccade {
+        Intensity::H => 1,
+        Intensity::M => 2,
+        Intensity::L => 3,
+    };
+    for line in lines.flatten() {
+        writeln!(
+            out,
+            "{}",
+            style_line(&line, cli, &mut saccade_iter, saccade_mode)
+        )?;
+    }
+    out.flush()
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
