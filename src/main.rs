@@ -156,3 +156,79 @@ fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool
 
     styled_text
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const BOLD: &str = "\x1b[1m";
+    const DIM: &str = "\x1b[2m";
+    const RESET: &str = "\x1b[0m";
+
+    fn cli(args: &[&str]) -> Cli {
+        Cli::parse_from(std::iter::once("fsrx").chain(args.iter().copied()))
+    }
+
+    fn style(line: &str, args: &[&str]) -> String {
+        let cli = cli(args);
+        style_line(line, &cli, &mut -1, 1)
+    }
+
+    /// Renders the expected output of a single word: `bold` graphemes in bold,
+    /// `dim` graphemes dimmed, one escape pair per grapheme.
+    fn expected(bold: &[&str], dim: &[&str]) -> String {
+        let bold = bold.iter().map(|g| format!("{BOLD}{g}{RESET}"));
+        let dim = dim.iter().map(|g| format!("{DIM}{g}{RESET}"));
+        bold.chain(dim).collect()
+    }
+
+    #[test]
+    fn ascii_word_bolds_first_half() {
+        assert_eq!(
+            style("hello", &["-c"]),
+            expected(&["h", "e", "l"], &["l", "o"])
+        );
+    }
+
+    #[test]
+    fn accented_word_counts_graphemes_not_bytes() {
+        assert_eq!(style("ação", &["-c"]), expected(&["a", "ç"], &["ã", "o"]));
+    }
+
+    #[test]
+    fn cyrillic_word_gets_fixation() {
+        assert_eq!(
+            style("булок", &["-c"]),
+            expected(&["б", "у", "л"], &["о", "к"])
+        );
+    }
+
+    #[test]
+    fn combining_mark_stays_with_its_base() {
+        let e_acute = "e\u{301}";
+        assert_eq!(
+            style("cafe\u{301}", &["-c"]),
+            expected(&["c", "a"], &["f", e_acute])
+        );
+    }
+
+    #[test]
+    fn zwj_emoji_sequence_is_not_split() {
+        let family = "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F466}";
+        let styled = style(family, &["-c"]);
+        assert_eq!(styled, format!("{DIM}{family}{RESET}"));
+    }
+
+    #[test]
+    fn non_word_text_is_dimmed_and_kept() {
+        assert_eq!(
+            style("a, b", &["-c"]),
+            [
+                expected(&["a"], &[]),
+                expected(&[], &[",", " "]),
+                expected(&["b"], &[])
+            ]
+            .concat()
+        );
+    }
+}
