@@ -1,18 +1,18 @@
 [package]
 name = "fsrx"
-version = "1.0.1"
+version = "1.0.3"
 description = "📚 flow state reading in the terminal"
 edition = "2021"
 readme = "README.md"
-repository = "https://github.com/coloradocolby/fsrx.git"
-homepage = "https://github.com/coloradocolby/fsrx"
+repository = "https://github.com/jrnxf/fsrx.git"
+homepage = "https://github.com/jrnxf/fsrx"
 license = "MIT"
-authors = ["Colby Thomas <coloradocolby@gmail.com>"]
-exclude = ["assets/*", ".github/*",]
-keywords = ["reading", "utility", "terminal", "cli", "fast" ]
+authors = ["Colby Thomas <colby@jrnxf.co>"]
+exclude = [".github/*"]
+keywords = ["reading", "utility", "terminal", "cli", "fast"]
 
 [dependencies]
 ansi_term = "0.12.1"
 unicode-segmentation = "1.9.0"
-clap = { version = "3.1.18", features = ["derive"] }
+clap = { version = "3.2.8", features = ["derive"] }
 atty = "0.2.14"
