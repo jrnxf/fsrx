@@ -139,7 +139,7 @@ fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool
     let graphemes = UnicodeSegmentation::graphemes(substr, true).collect::<Vec<&str>>();
 
     let mid_point = (graphemes.len() as f32
-        * match (*cli).fixation {
+        * match cli.fixation {
             Intensity::H => 0.7,
             Intensity::M => 0.5,
             Intensity::L => 0.3,
@@ -152,13 +152,13 @@ fn style_substr(substr: &str, cli: &Cli, should_process: bool, saccade_hit: bool
         .map(|(i, x)| -> String {
             let curr_char = x.to_owned();
             if i < mid_point && saccade_hit && should_process {
-                return if (*cli).contrast {
+                if cli.contrast {
                     format!("{}", Style::new().bold().paint(curr_char))
                 } else {
                     String::from(curr_char)
-                };
+                }
             } else {
-                return format!("{}", Style::new().dimmed().paint(curr_char));
+                format!("{}", Style::new().dimmed().paint(curr_char))
             }
         })
         .collect::<Vec<String>>()
