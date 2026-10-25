@@ -1,16 +1,16 @@
 import { toHtml } from "./fsrx.js";
 
 // The Try it text, scrolling up past a fixed reading line.
-export function initReading(flags, q) {
+export function initReading(flags) {
   const src = document.getElementById("src");
   const slip = document.getElementById("slip");
   const roll = document.getElementById("roll");
   const txt = document.getElementById("roll-txt");
   const SPEEDS = { slow: 18, medium: 30, fast: 48 };
-  let speed = SPEEDS[q.get("speed")] ? q.get("speed") : "medium";
-  let mode = q.get("plain") === "1" ? "plain" : "fsrx";
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches || q.get("still") === "1";
-  let offset = Number(q.get("y")) || 0;
+  let speed = "medium";
+  let mode = "fsrx";
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let offset = 0;
   let last = 0;
 
   const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);

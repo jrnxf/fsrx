@@ -7,15 +7,14 @@
 //   [data-s=l|m|h]         saccade buttons
 //   [data-c]               contrast toggle
 //   [data-cmd]             filled with the matching fsrx command
-//   [data-sample=<id>]     loads <template id="<id>"> into the input
 //
 // Several roots can share one flags object, so one set of controls can
 // drive many outputs. Listeners get the flags on every change.
 
 import { toHtml, command } from "./fsrx.js";
 
-export function createFlags(initial = {}) {
-  const flags = { fixation: "m", saccade: "h", contrast: false, ...initial };
+export function createFlags() {
+  const flags = { fixation: "m", saccade: "h", contrast: false };
   const listeners = new Set();
   return {
     get: () => ({ ...flags }),
@@ -49,23 +48,15 @@ export function bindControls(root, flags) {
   });
 }
 
-export function bindTester(root, flags, { onRender } = {}) {
+export function bindTester(root, flags) {
   const input = root.querySelector("[data-input]");
   const out = root.querySelector("[data-out]");
   const render = () => {
     const f = flags.get();
     out.classList.toggle("contrast", f.contrast);
     out.innerHTML = toHtml(input.value, f);
-    onRender?.(out, f);
   };
   input.addEventListener("input", render);
-  root.querySelectorAll("[data-sample]").forEach((b) =>
-    b.addEventListener("click", () => {
-      input.value = document.getElementById(b.dataset.sample).innerHTML.trim();
-      root.querySelectorAll("[data-sample]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-      render();
-    }),
-  );
   flags.on(render);
   return render;
 }

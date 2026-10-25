@@ -11,18 +11,12 @@
   if (pick) root.dataset.theme = pick;
   const current = () =>
     root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  window.fsrxTheme = {
-    current,
-    toggle() {
-      const next = current() === "dark" ? "light" : "dark";
-      root.dataset.theme = next;
-      try {
-        localStorage.setItem("fsrx-theme", next);
-      } catch {}
-      document.dispatchEvent(new CustomEvent("themechange", { detail: next }));
-    },
-  };
   document.addEventListener("click", (e) => {
-    if (e.target.closest("[data-theme-toggle]")) window.fsrxTheme.toggle();
+    if (!e.target.closest("[data-theme-toggle]")) return;
+    const next = current() === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem("fsrx-theme", next);
+    } catch {}
   });
 })();

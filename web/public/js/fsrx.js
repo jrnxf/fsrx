@@ -198,7 +198,8 @@ export function toAnsi(text, opts = {}) {
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // HTML for a page: <span class="fx"> and <span class="dm">, one line per row.
-export function toHtml(text, opts = {}, cls = { fix: "fx", dim: "dm" }) {
+export function toHtml(text, opts = {}) {
+  const cls = { fix: "fx", dim: "dm" };
   return fsrx(text, opts)
     .map((runs) => runs.map(({ t, k }) => `<span class="${cls[k]}">${esc(t)}</span>`).join(""))
     .join("\n");
