@@ -40,7 +40,14 @@ enum Intensity {
     H, // high
 }
 
-fn main() -> io::Result<()> {
+fn main() {
+    if let Err(e) = run() {
+        eprintln!("fsrx: {e}");
+        std::process::exit(1);
+    }
+}
+
+fn run() -> io::Result<()> {
     let cli = Cli::parse();
     let lines: Box<dyn Iterator<Item = io::Result<String>>> = if let Some(path) = &cli.path {
         match read_lines(path) {
