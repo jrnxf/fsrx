@@ -1,0 +1,16 @@
+the quick brown fox jumps over the lazy dog
+It was the best of times, it was the worst of times; it was the age of wisdom...
+Don't stop: e.g. 3.14, 1,000,000 and v1.1.0 (see https://example.com/a-b_c?x=1).
+ação, café, naïve, coöperate, Ελληνικά γράμματα, булок и чай
+cafe​ with zero width space, tab	separated	words, trailing spaces   
+👨‍👩‍👧‍👦 family emoji, 👍🏽 thumbs, 🇵🇹 flag, ❤️ heart
+日本語の文章は単語の区切りが難しい。中文没有空格。
+ภาษาไทยไม่มีช่องว่างระหว่างคำ
+مرحبا بالعالم، هذا نص عربي
+한국어 문장도 시험해 봅시다
+snake_case camelCase kebab-case UPPER CASE ½ ² Ⅻ x²
+a
+supercalifragilisticexpialidocious pneumonoultramicroscopicsilicovolcanoconiosis
+
+line after blank, CRLF next
+crlf line

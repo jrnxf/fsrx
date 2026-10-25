@@ -1,0 +1,12 @@
+{
+  "name": "fsrx-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "cargo build --release --manifest-path ../Cargo.toml && node test/parity.mjs ../target/release/fsrx",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.3"
+  }
+}

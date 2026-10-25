@@ -1,0 +1,146 @@
+@font-face { font-family: "IM Fell English"; src: url(fonts/IMFellEnglish-Regular.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "IM Fell English"; src: url(fonts/IMFellEnglish-Italic.woff2) format("woff2"); font-style: italic; font-display: swap; }
+@font-face { font-family: "IM Fell English SC"; src: url(fonts/IMFellEnglishSC-Regular.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Libre Caslon Text"; src: url(fonts/LibreCaslonText-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Libre Caslon Text"; src: url(fonts/LibreCaslonText-Bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Libre Caslon Text"; src: url(fonts/LibreCaslonText-Italic.woff2) format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+
+/* Light: paper. Dark: the same page printed on black. */
+:root {
+  --paper: #efe5cf;
+  --paper2: #e7dcc2;
+  --ink: #2a2018;
+  --line: #3b2f23;
+  --soft: #6e604d;
+  --rule: #cbbd9f;
+  --red: #9b3022;
+  --dimc: color-mix(in srgb, var(--ink) 34%, transparent);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --paper: #16130f; --paper2: #1c1813; --ink: #eadfc7; --line: #d7c9ab; --soft: #a3967f; --rule: #3a3227; --red: #e07a5f; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --paper: #16130f; --paper2: #1c1813; --ink: #eadfc7; --line: #d7c9ab; --soft: #a3967f; --rule: #3a3227; --red: #e07a5f; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.62 "Libre Caslon Text", Georgia, serif; }
+a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+button { font: inherit; color: inherit; }
+p code { font: .82em ui-monospace, Menlo, monospace; }
+.sc { font-family: "IM Fell English SC", "IM Fell English", serif; letter-spacing: .06em; }
+.small { font-size: 15px; color: var(--soft); }
+
+/* fsrx output: the bright start and the dimmed rest */
+.fx { color: var(--ink); }
+.dm { color: var(--dimc); }
+.contrast .fx { font-weight: 700; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 40px; }
+header.top { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 26px 0 14px; border-bottom: 1px solid var(--line); }
+header.top::after { content: ""; }
+.wm { font: 34px/1 "IM Fell English SC", serif; text-decoration: none; letter-spacing: .04em; }
+header.top nav { display: flex; gap: 24px; align-items: baseline; font: italic 17px "IM Fell English", serif; }
+header.top nav a { text-decoration: none; white-space: nowrap; }
+header.top nav a:hover { text-decoration: underline; }
+.toggle { background: none; border: 0; padding: 0; cursor: pointer; font: italic 17px "IM Fell English", serif; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+.rule2 { height: 4px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+
+h1 { font: 400 clamp(40px, 4.6vw, 62px)/1.04 "IM Fell English", serif; margin: 0 0 18px; letter-spacing: -.005em; }
+h2 { font: 400 clamp(30px, 3.2vw, 44px)/1.1 "IM Fell English", serif; margin: 6px 0 14px; }
+h3 { font: 400 22px/1.2 "IM Fell English", serif; margin: 26px 0 8px; }
+section.block { padding: 72px 0; border-top: 1px solid var(--line); position: relative; }
+section.block::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; border-top: 1px solid var(--line); }
+.intro { max-width: 38em; margin: 0 0 26px; }
+
+/* top: the eye beside what fsrx does */
+.plate { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; padding: 40px 0 70px; }
+.plate > * { min-width: 0; }
+figure.eye { margin: 0; }
+figure.eye svg { width: 100%; height: auto; display: block; overflow: visible; }
+svg .ln { stroke: var(--line); fill: none; stroke-width: 1.2; }
+svg .ln.thin { stroke-width: .7; }
+svg .ln.thick { stroke-width: 2.2; }
+svg .ray { stroke: var(--red); stroke-width: 1; fill: none; stroke-dasharray: 5 4; }
+svg .ray.solid { stroke-dasharray: none; }
+svg .ray2 { stroke: var(--soft); stroke-width: .9; fill: none; stroke-dasharray: 2 4; }
+svg .lbl { font: italic 15px "IM Fell English", serif; fill: var(--ink); }
+svg .lead { stroke: var(--line); stroke-width: .6; fill: none; }
+svg .hatch line { stroke: var(--line); stroke-width: .6; }
+svg .dot { fill: var(--red); }
+figcaption { font-size: 15px; color: var(--soft); text-align: center; margin-top: 8px; font-style: italic; }
+figcaption a { color: inherit; }
+.lede { font-size: 19px; margin: 0 0 24px; }
+.install { display: flex; border: 1px solid var(--line); max-width: 440px; }
+.install code { flex: 1; padding: 11px 14px; font: 15px ui-monospace, Menlo, monospace; white-space: nowrap; overflow: auto; }
+.install button { border: 0; border-left: 1px solid var(--line); background: var(--ink); color: var(--paper); padding: 0 16px; cursor: pointer; font: 14px "IM Fell English SC", serif; letter-spacing: .08em; }
+
+/* real output, as a terminal prints it */
+.term { font: 14px/1.7 ui-monospace, Menlo, monospace; border-left: 2px solid var(--line); padding: 4px 0 4px 14px; margin: 0 0 24px; overflow-x: auto; }
+.term div { white-space: pre; }
+.term .pr, .cmd .pr { color: var(--soft); }
+
+/* controls */
+.panel label, .panel .k { display: block; font: 13px "IM Fell English SC", serif; letter-spacing: .1em; color: var(--soft); margin: 18px 0 6px; }
+.panel label:first-child, .panel .k:first-child { margin-top: 0; }
+.panel textarea { width: 100%; min-height: 120px; resize: vertical; font: 15px/1.5 "Libre Caslon Text", serif; background: var(--paper2); color: var(--ink); border: 1px solid var(--rule); padding: 10px 12px; outline: none; }
+.panel textarea:focus { border-color: var(--line); }
+.seg { display: inline-flex; border: 1px solid var(--line); }
+.seg button { background: none; border: 0; border-left: 1px solid var(--line); padding: 5px 13px; cursor: pointer; font: 16px "Libre Caslon Text", serif; }
+.seg button:first-child { border-left: 0; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+/* try it */
+.try { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 40px; align-items: start; }
+.try > * { min-width: 0; }
+.cmd { font: 15px ui-monospace, Menlo, monospace; margin: 0 0 12px; }
+.tryout { font-size: 24px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+
+/* scrolling */
+.rl-wrap { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 40px; align-items: start; }
+.rl-wrap > * { min-width: 0; }
+figure.rl { margin: 0; }
+.slip { position: relative; height: 300px; overflow: hidden; background: var(--paper2); border: 1px solid var(--line); }
+.slip::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2.1em; transform: translateY(-50%); font-size: 26px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.slip::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(var(--paper2) 0, transparent 26%, transparent 74%, var(--paper2) 100%); }
+.hand { position: absolute; top: 50%; z-index: 3; width: 0; height: 0; border: 8px solid transparent; transform: translateY(-50%); }
+.hand.l { left: 8px; border-left: 12px solid var(--red); border-right: 0; }
+.hand.r { right: 8px; border-right: 12px solid var(--red); border-left: 0; }
+.roll { position: absolute; left: 0; right: 0; top: 0; padding: 0 40px; z-index: 1; will-change: transform; }
+.rtxt { font-size: 26px; line-height: 2.1; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; padding: 130px 0 160px; }
+
+/* how it works: an even two-by-two grid */
+.how { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
+.how .cell { padding: 26px 0 30px; border-top: 1px solid var(--rule); min-width: 0; }
+.how .cell h3 { margin: 0 0 14px; }
+.how .cell p { margin: 0 0 12px; }
+.how .install { max-width: none; margin-bottom: 10px; }
+.how .small { margin-top: 12px; }
+dl.man { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; font-size: 17px; }
+dl.man dt { margin: 0; white-space: nowrap; }
+dl.man dt code { font: 15px ui-monospace, Menlo, monospace; }
+dl.man dd { margin: 0; }
+
+footer { border-top: 1px solid var(--line); padding: 30px 0 60px; font-size: 15px; color: var(--soft); text-align: center; font-style: italic; }
+footer p { margin: 0 auto 6px; max-width: 52em; }
+
+@media (max-width: 960px) {
+  .plate, .try, .rl-wrap, .how { grid-template-columns: 1fr; gap: 26px; }
+  .plate > div { order: -1; }
+  .how { row-gap: 0; }
+}
+@media (max-width: 600px) {
+  .wrap { padding: 0 16px; }
+  header.top nav { gap: 14px; }
+  header.top nav .wide { display: none; }
+  .wm { font-size: 28px; }
+  .plate { padding: 26px 0 50px; }
+  svg .lbl { font-size: 19px; }
+  section.block { padding: 50px 0; }
+  .term { font-size: 12px; }
+  .tryout { font-size: 20px; }
+  .slip { height: 250px; }
+  .slip::before { font-size: 20px; }
+  .rtxt { font-size: 20px; padding: 105px 0 140px; }
+  .roll { padding: 0 28px; }
+}

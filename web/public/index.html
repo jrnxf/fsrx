@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fsrx - flow state reading in the terminal</title>
+<meta name="description" content="fsrx prints each word with the first part at full strength and the rest dimmed. A small command-line tool written in Rust.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%23efe5cf%22/%3E%3Ctext x=%223%22 y=%2222%22 font-family=%22serif%22 font-size=%2216%22 fill=%22%232a2018%22%3Efs%3C/text%3E%3C/svg%3E">
+<script src="js/theme.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="wm" href="#"><span class="fx">fs</span><span class="dm">rx</span></a>
+  <nav>
+    <a href="#try">try it</a>
+    <a href="#scroll" class="wide">scrolling</a>
+    <a href="#how" class="wide">how it works</a>
+    <a href="https://github.com/jrnxf/fsrx" class="wide">source</a>
+    <button class="toggle" data-theme-toggle>light / dark</button>
+  </nav>
+</header>
+<div class="rule2"></div>
+
+<section class="plate">
+  <figure class="eye">
+    <svg viewBox="0 0 600 400" role="img" aria-label="Engraving of an eye in cross-section: the letters you look at are focused onto the fovea">
+      <defs>
+        <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(35)" class="hatch"><line x1="0" y1="0" x2="0" y2="5"/></pattern>
+        <pattern id="stip" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".6" fill="currentColor" opacity=".35"/><circle cx="5.5" cy="5" r=".5" fill="currentColor" opacity=".25"/></pattern>
+      </defs>
+      <g style="color: var(--line)">
+        <circle cx="350" cy="200" r="138" fill="url(#stip)"/>
+        <path d="M232 108 A150 150 0 1 1 232 292" class="ln thick"/>
+        <path d="M238 116 A144 144 0 1 1 238 284" fill="none" stroke="url(#hatch)" stroke-width="11"/>
+        <path d="M281 80.5 A138 138 0 1 1 281 319.5" class="ln"/>
+        <path d="M232 108 Q170 200 232 292" class="ln thick"/>
+        <path d="M238 112 Q182 200 238 288" class="ln thin"/>
+        <path d="M242 128 V178 M242 222 V272" class="ln" stroke-width="3.5"/>
+        <ellipse cx="260" cy="200" rx="16" ry="44" class="ln"/>
+        <ellipse cx="260" cy="200" rx="9" ry="34" class="ln thin"/>
+        <path d="M486 184 Q474 200 486 216" class="ln"/>
+        <path d="M478 250 L592 284 M468 268 L586 306" class="ln"/>
+        <path d="M486 260 L590 292 M480 270 L588 300" class="ln thin"/>
+      </g>
+      <path d="M8 150 L275 200 L482 239" class="ray2"/>
+      <path d="M8 200 L206 161 L256 170 L478 200" class="ray"/>
+      <path d="M8 200 L206 239 L256 230 L478 200" class="ray"/>
+      <path d="M8 200 L478 200" class="ray solid"/>
+      <circle cx="8" cy="200" r="3" class="dot"/>
+      <path d="M402 262 L476 240" class="lead"/><text x="296" y="276" class="lbl">the rest of the line</text>
+      <circle cx="478" cy="200" r="3.5" class="dot"/>
+      <path d="M8 140 V260" class="ln thick"/>
+      <text x="14" y="132" class="lbl">the page</text>
+      <path d="M190 92 L214 132" class="lead"/><text x="146" y="86" class="lbl">cornea</text>
+      <path d="M232 330 L242 274" class="lead"/><text x="214" y="348" class="lbl">iris</text>
+      <path d="M262 64 L260 154" class="lead"/><text x="248" y="56" class="lbl">lens</text>
+      <path d="M430 44 L410 78" class="lead"/><text x="420" y="38" class="lbl">retina</text>
+      <path d="M520 150 L484 196" class="lead"/><text x="512" y="142" class="lbl">fovea</text>
+      <path d="M548 352 L548 300" class="lead"/><text x="508" y="370" class="lbl">optic nerve</text>
+    </svg>
+    <figcaption>Fig. 1. The fovea, where sight is sharpest, spans about 6 to 8 letters at reading distance (<a href="https://doi.org/10.1037/0033-2909.124.3.372">Rayner, 1998</a>).</figcaption>
+  </figure>
+  <div>
+    <p class="sc" style="color: var(--soft); margin: 0 0 10px">Flow state reading in the terminal</p>
+    <h1>fsrx dims the end of each word.</h1>
+    <p class="lede">Give it a file or pipe text in. It prints each word with the first part at full strength and the rest dimmed. Add <code>-c</code> and the first part is bold.</p>
+    <div class="term" aria-label="Example output">
+      <div><span class="pr">$</span> echo "Call me Ishmael." | fsrx</div>
+      <div class="out" id="ex1"></div>
+    </div>
+    <div class="install"><code>brew install jrnxf/tap/fsrx</code><button data-copy="brew install jrnxf/tap/fsrx">copy</button></div>
+  </div>
+</section>
+
+<section class="block" id="try">
+  <h2>Try it</h2>
+  <div class="try">
+    <div class="panel">
+      <label for="src">Text</label>
+      <textarea id="src" data-input spellcheck="false"></textarea>
+      <span class="k">Fixation, -f</span>
+      <span class="seg"><button data-f="l">l</button><button data-f="m">m</button><button data-f="h">h</button></span>
+      <span class="k">Saccade, -s</span>
+      <span class="seg"><button data-s="l">l</button><button data-s="m">m</button><button data-s="h">h</button></span>
+      <span class="k">Contrast, -c</span>
+      <span class="seg"><button data-c>bold</button></span>
+    </div>
+    <div>
+      <p class="cmd"><span class="pr">$</span> <code data-cmd>fsrx</code></p>
+      <p class="tryout" data-out aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="scroll">
+  <h2>Scrolling</h2>
+  <p class="intro">The text from Try it, scrolling past a fixed line. In a terminal you scroll it yourself with <code>fsrx notes.txt | less -R</code>.</p>
+  <div class="rl-wrap">
+    <figure class="rl">
+      <div class="slip" id="slip">
+        <span class="hand l" aria-hidden="true"></span><span class="hand r" aria-hidden="true"></span>
+        <div class="roll" id="roll"><p class="rtxt" id="roll-txt" aria-live="off"></p></div>
+      </div>
+    </figure>
+    <div class="panel">
+      <span class="k">Speed</span>
+      <span class="seg"><button data-rl-speed="slow">slow</button><button data-rl-speed="medium">medium</button><button data-rl-speed="fast">fast</button></span>
+      <span class="k">Text</span>
+      <span class="seg"><button data-rl-mode="fsrx">fsrx</button><button data-rl-mode="plain">plain</button></span>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <h2>How it works</h2>
+  <div class="how">
+    <div class="cell">
+      <h3>Options</h3>
+      <p>Reads a file, or standard input.</p>
+      <dl class="man">
+        <dt><code>-f l|m|h</code></dt><dd>bright part of each word: 30, 50 or 70%. Default&nbsp;m.</dd>
+        <dt><code>-s l|m|h</code></dt><dd>bright start on every 3rd, 2nd or every word. Default&nbsp;h.</dd>
+        <dt><code>-c</code></dt><dd>bold the bright part.</dd>
+        <dt><code>[PATH]</code></dt><dd>file to read; stdin if left out.</dd>
+      </dl>
+    </div>
+    <div class="cell">
+      <h3>Install</h3>
+      <div class="install"><code>brew install jrnxf/tap/fsrx</code><button data-copy="brew install jrnxf/tap/fsrx">copy</button></div>
+      <div class="install"><code>cargo install fsrx</code><button data-copy="cargo install fsrx">copy</button></div>
+      <p class="small">Also in the AUR and NetBSD (<code>textproc/fsrx</code>).</p>
+    </div>
+    <div class="cell">
+      <h3>Reading speed</h3>
+      <p class="small">Studies found no reading-speed gain (<a href="https://research.vu.nl/en/publications/no-bionic-reading-does-not-work/">Snell, 2024</a>). It does shift where the eye first lands in long words (<a href="https://doi.org/10.1098/rsos.250177">Parker et al., 2026</a>).</p>
+    </div>
+    <div class="cell">
+      <h3>Credit</h3>
+      <p class="small">Inspired by, but not affiliated with, Renato Casutt's Bionic Reading.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>fsrx by Colby Thomas, MIT licence. <a href="https://github.com/jrnxf/fsrx">Source</a>, <a href="https://crates.io/crates/fsrx">crates.io</a>.</p>
+  <p>Set in IM Fell English and Libre Caslon Text, under the SIL Open Font Licence (<a href="fonts/IMFellEnglish-OFL.txt">IM Fell</a>, <a href="fonts/LibreCaslonText-OFL.txt">Libre Caslon</a>). The examples run a JavaScript port of fsrx whose output matches the binary byte for byte.</p>
+</footer>
+</div>
+
+<template id="s-default">Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to sea as soon as I can.</template>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
