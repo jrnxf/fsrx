@@ -1,14 +1,12 @@
-// Light and dark. ?theme=dark|light wins, then the visitor's last pick,
-// then the system setting. Load in <head> so the first paint is right.
+// Light and dark. The visitor's last pick wins, then the system setting.
+// Load in <head> so the first paint is right.
 (function () {
   const root = document.documentElement;
-  const q = new URLSearchParams(location.search).get("theme");
   let saved = null;
   try {
     saved = localStorage.getItem("fsrx-theme");
   } catch {}
-  const pick = q === "dark" || q === "light" ? q : saved;
-  if (pick) root.dataset.theme = pick;
+  if (saved) root.dataset.theme = saved;
   const current = () =>
     root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   document.addEventListener("click", (e) => {
