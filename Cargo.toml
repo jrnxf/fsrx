@@ -8,7 +8,7 @@ repository = "https://github.com/jrnxf/fsrx.git"
 homepage = "https://github.com/jrnxf/fsrx"
 license = "MIT"
 authors = ["Colby Thomas <colby@jrnxf.co>"]
-exclude = [".github/*"]
+exclude = [".github/*", "/web", ".gitattributes"]
 keywords = ["reading", "utility", "terminal", "cli", "fast"]
 
 [dependencies]
