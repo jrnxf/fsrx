@@ -79,7 +79,13 @@ fn write_styled_lines(
         Intensity::M => 2,
         Intensity::L => 3,
     };
-    for line in lines.flatten() {
+    for line in lines {
+        let line = match line {
+            Ok(line) => line,
+            // invalid UTF-8 on a line: drop it, keep reading
+            Err(e) if e.kind() == io::ErrorKind::InvalidData => continue,
+            Err(e) => return Err(e),
+        };
         writeln!(
             out,
             "{}",
