@@ -2,12 +2,13 @@
 
 The fsrx site: a single page built with Vite, React and TypeScript, served by Cloudflare Workers static assets.
 
-- `index.html`: the page shell. A small inline script sets the saved light/dark theme before first paint.
+- `index.html`: the page shell, with the fonts preloaded. A small inline script sets the saved light/dark theme before first paint.
 - `src/style.css`: the styles.
 - `src/fsrx.ts`: fsrx's styling logic from `src/main.rs`, ported to TypeScript. The hero example, Try it and
   Scrolling all run it in the browser.
 - `src/*.tsx`: the page's components.
-- `public/fonts/`: IM Fell English and Libre Caslon Text, each with its SIL Open Font Licence.
+- `src/fonts/`: IM Fell English and Libre Caslon Text, hashed by the build. Their SIL Open Font Licence texts are in `public/fonts/`.
+- `prerender.mjs`: runs after `vite build`. It renders the page into `dist/index.html`, so the first paint has its content, and writes `dist/_headers` (immutable caching for `/assets/*`, `Link` preload headers for early hints).
 - `test/parity.mjs`: runs the port and the real `fsrx` binary on the same inputs, with every combination of `-c`,
   `-f` and `-s`, and fails if any output differs by a byte. CI runs it on every pull request.
 

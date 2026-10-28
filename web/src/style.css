@@ -1,9 +1,9 @@
-@font-face { font-family: "IM Fell English"; src: url(/fonts/IMFellEnglish-Regular.woff2) format("woff2"); font-display: swap; }
-@font-face { font-family: "IM Fell English"; src: url(/fonts/IMFellEnglish-Italic.woff2) format("woff2"); font-style: italic; font-display: swap; }
-@font-face { font-family: "IM Fell English SC"; src: url(/fonts/IMFellEnglishSC-Regular.woff2) format("woff2"); font-display: swap; }
-@font-face { font-family: "Libre Caslon Text"; src: url(/fonts/LibreCaslonText-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Libre Caslon Text"; src: url(/fonts/LibreCaslonText-Bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Libre Caslon Text"; src: url(/fonts/LibreCaslonText-Italic.woff2) format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "IM Fell English"; src: url(./fonts/IMFellEnglish-Regular.woff2) format("woff2"); font-display: block; }
+@font-face { font-family: "IM Fell English"; src: url(./fonts/IMFellEnglish-Italic.woff2) format("woff2"); font-style: italic; font-display: block; }
+@font-face { font-family: "IM Fell English SC"; src: url(./fonts/IMFellEnglishSC-Regular.woff2) format("woff2"); font-display: block; }
+@font-face { font-family: "Libre Caslon Text"; src: url(./fonts/LibreCaslonText-Regular.woff2) format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Libre Caslon Text"; src: url(./fonts/LibreCaslonText-Bold.woff2) format("woff2"); font-weight: 700; font-display: block; }
+@font-face { font-family: "Libre Caslon Text"; src: url(./fonts/LibreCaslonText-Italic.woff2) format("woff2"); font-weight: 400; font-style: italic; font-display: block; }
 
 /* Light: paper. Dark: the same page printed on black. */
 :root {

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node prerender.mjs",
     "typecheck": "tsc --noEmit",
     "test": "cargo build --release --manifest-path ../Cargo.toml && node test/parity.mjs ../target/release/fsrx",
     "deploy": "wrangler deploy"
