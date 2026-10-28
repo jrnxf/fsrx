@@ -10,7 +10,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { toAnsi } from "../public/js/fsrx.js";
+import { toAnsi } from "../src/fsrx.ts";
 
 const bin = process.argv[2];
 if (!bin) {

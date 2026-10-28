@@ -2,8 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "fsrx-web",
   "compatibility_date": "2026-10-25",
-  // Static files only: public/ is served as it is, with no build step.
-  "assets": { "directory": "./public" },
+  // Vite builds the site into dist/, which is served as static assets.
+  "build": { "command": "npm run build" },
+  "assets": { "directory": "./dist" },
   "workers_dev": false,
   "preview_urls": false,
   "routes": [{ "pattern": "fsrx.jrnxf.co", "custom_domain": true }],
