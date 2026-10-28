@@ -82,3 +82,9 @@ jobs:
           node-version: 24
       - run: cargo build --release
       - run: node web/test/parity.mjs target/release/fsrx
+      - run: npm ci
+        working-directory: web
+      - run: npm run typecheck
+        working-directory: web
+      - run: npm run build
+        working-directory: web

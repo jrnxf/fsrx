@@ -15,8 +15,20 @@
 //   dim: everything else (the rest of the word, skipped words, spaces
 //        and punctuation). Printed with SGR 2, dim.
 
-const FIXATION = { h: 0.7, m: 0.5, l: 0.3 };
-const SACCADE = { h: 1, m: 2, l: 3 };
+export type Fixation = "l" | "m" | "h";
+export type Saccade = "l" | "m" | "h";
+export interface Options {
+  fixation?: Fixation;
+  saccade?: Saccade;
+  contrast?: boolean;
+}
+export interface Run {
+  t: string;
+  k: "fix" | "dim";
+}
+
+const FIXATION: Record<Fixation, number> = { h: 0.7, m: 0.5, l: 0.3 };
+const SACCADE: Record<Saccade, number> = { h: 1, m: 2, l: 3 };
 
 const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
 // Rust's char::is_alphanumeric: Alphabetic or Numeric (Nd, Nl, No).
@@ -25,8 +37,8 @@ const ALNUM = /[\p{Alphabetic}\p{N}]/u;
 // Grapheme clusters as unicode-segmentation 1.13 cuts them. It keeps Thai
 // and Lao SARA AM (U+0E33, U+0EB3) apart from the consonant before it;
 // the browser joins them.
-function graphemesOf(s) {
-  const out = [];
+function graphemesOf(s: string): string[] {
+  const out: string[] = [];
   for (const { segment: g } of graphemes.segment(s)) {
     out.push(...g.split(/(?=[\u0E33\u0EB3])/u));
   }
@@ -36,7 +48,7 @@ function graphemesOf(s) {
 // Word boundaries: the UAX #29 rules that unicode-segmentation implements.
 // Not Intl.Segmenter, whose dictionaries join Chinese, Japanese and Thai
 // characters into words that fsrx keeps apart.
-const WB = [
+const WB: [string, RegExp][] = [
   ["CR", /\r/u],
   ["LF", /\n/u],
   ["NL", /[\v\f\x85\u2028\u2029]/u],
@@ -59,8 +71,8 @@ const WB = [
   ["Other", /[\p{Ideographic}\p{Script=Hiragana}\p{Script=Thai}\p{Script=Lao}\p{Script=Myanmar}\p{Script=Khmer}\p{Script=Tai_Le}\p{Script=New_Tai_Lue}\p{Script=Tai_Tham}\p{Script=Tai_Viet}\p{Script=Ahom}]/u],
   ["ALetter", /[\p{Alphabetic}\u02C2-\u02C5\u02D2-\u02D7\u02DE\u02DF\u02E5-\u02EB\u02ED\u02EF-\u02FF\u055A-\u055C\u055E\u058A\u05F3\uA720\uA721\uA789\uA78A\uAB5B\uAB6A\uAB6B]/u],
 ];
-const wbCache = new Map();
-function wb(c) {
+const wbCache = new Map<string, string>();
+function wb(c: string): string {
   let p = wbCache.get(c);
   if (p === undefined) {
     p = "Other";
@@ -70,13 +82,13 @@ function wb(c) {
   return p;
 }
 const PICT = /\p{Extended_Pictographic}/u;
-const EFZ = (p) => p === "Extend" || p === "Format" || p === "ZWJ";
-const AH = (p) => p === "ALetter" || p === "Hebrew";
-const MIDL = (p) => p === "MidLetter" || p === "MidNumLet" || p === "SQ";
-const MIDN = (p) => p === "MidNum" || p === "MidNumLet" || p === "SQ";
-const NLS = (p) => p === "CR" || p === "LF" || p === "NL";
+const EFZ = (p: string) => p === "Extend" || p === "Format" || p === "ZWJ";
+const AH = (p: string) => p === "ALetter" || p === "Hebrew";
+const MIDL = (p: string) => p === "MidLetter" || p === "MidNumLet" || p === "SQ";
+const MIDN = (p: string) => p === "MidNum" || p === "MidNumLet" || p === "SQ";
+const NLS = (p: string) => p === "CR" || p === "LF" || p === "NL";
 
-function isBoundary(cs, ps, i) {
+function isBoundary(cs: string[], ps: string[], i: number): boolean {
   const a = ps[i - 1], b = ps[i];
   if (a === "CR" && b === "LF") return false; // WB3
   if (NLS(a) || NLS(b)) return true; // WB3a, WB3b
@@ -84,11 +96,11 @@ function isBoundary(cs, ps, i) {
   if (a === "WSeg" && b === "WSeg") return false; // WB3d
   if (EFZ(b)) return false; // WB4
   // WB4: look through Extend, Format and ZWJ to the character they attach to.
-  const back = (j) => {
+  const back = (j: number) => {
     while (j > 0 && EFZ(ps[j])) j--;
     return EFZ(ps[j]) || NLS(ps[j]) ? -1 : j;
   };
-  const fwd = (j) => {
+  const fwd = (j: number) => {
     while (j < ps.length && EFZ(ps[j])) j++;
     return j;
   };
@@ -121,7 +133,7 @@ function isBoundary(cs, ps, i) {
 }
 
 // Every word-boundary segment of a line, words and gaps alike, in order.
-function* segments(line) {
+function* segments(line: string): Generator<string> {
   const cs = Array.from(line);
   const ps = cs.map(wb);
   let seg = cs[0] ?? "";
@@ -135,14 +147,14 @@ function* segments(line) {
   if (seg) yield seg;
 }
 
-function push(runs, t, k) {
+function push(runs: Run[], t: string, k: Run["k"]) {
   if (!t) return;
   const last = runs[runs.length - 1];
   if (last && last.k === k) last.t += t;
   else runs.push({ t, k });
 }
 
-function styleSubstr(runs, substr, fixation, isWord, saccadeHit) {
+function styleSubstr(runs: Run[], substr: string, fixation: Fixation, isWord: boolean, saccadeHit: boolean) {
   const gs = graphemesOf(substr);
   const mid = Math.ceil(Math.fround(gs.length * Math.fround(FIXATION[fixation])));
   gs.forEach((g, i) => push(runs, g, i < mid && saccadeHit && isWord ? "fix" : "dim"));
@@ -150,17 +162,17 @@ function styleSubstr(runs, substr, fixation, isWord, saccadeHit) {
 
 // Mirrors Rust's str::lines(): split on \n, drop one trailing empty line,
 // strip a \r before each \n.
-export function lines(text) {
+export function lines(text: string): string[] {
   const out = text.split("\n");
   if (out[out.length - 1] === "") out.pop();
   return out.map((l) => (l.endsWith("\r") ? l.slice(0, -1) : l));
 }
 
 // state.iter carries the saccade counter across lines, like saccade_iter.
-export function styleLine(line, opts, state) {
+export function styleLine(line: string, opts: Options, state: { iter: number }): Run[] {
   const fixation = opts.fixation || "m";
   const mode = SACCADE[opts.saccade || "h"];
-  const runs = [];
+  const runs: Run[] = [];
   for (const seg of segments(line)) {
     const isWord = ALNUM.test(seg);
     let hit = false;
@@ -174,13 +186,13 @@ export function styleLine(line, opts, state) {
 }
 
 // The whole input: one array of runs per output line.
-export function fsrx(text, opts = {}) {
+export function fsrx(text: string, opts: Options = {}): Run[][] {
   const state = { iter: -1 };
   return lines(text).map((line) => styleLine(line, opts, state));
 }
 
 // Byte-for-byte what the binary prints: one escape pair per grapheme.
-export function toAnsi(text, opts = {}) {
+export function toAnsi(text: string, opts: Options = {}): string {
   const contrast = !!opts.contrast;
   return fsrx(text, opts)
     .map((runs) =>
@@ -195,17 +207,8 @@ export function toAnsi(text, opts = {}) {
     .join("");
 }
 
-const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-
-// HTML for a page: <span class="fx"> and <span class="dm">, one line per row.
-export function toHtml(text, opts = {}) {
-  const cls = { fix: "fx", dim: "dm" };
-  return fsrx(text, opts)
-    .map((runs) => runs.map(({ t, k }) => `<span class="${cls[k]}">${esc(t)}</span>`).join(""))
-    .join("\n");
-}
-
-export function command(opts) {
+// The command line that matches a set of options.
+export function command(opts: Options): string {
   const parts = ["fsrx"];
   if (opts.contrast) parts.push("-c");
   if (opts.fixation && opts.fixation !== "m") parts.push(`-f${opts.fixation}`);

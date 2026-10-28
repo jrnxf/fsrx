@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fsrx - flow state reading in the terminal</title>
+<meta name="description" content="fsrx prints each word with the first part at full strength and the rest dimmed. A small command-line tool written in Rust.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%23efe5cf%22/%3E%3Ctext x=%223%22 y=%2222%22 font-family=%22serif%22 font-size=%2216%22 fill=%22%232a2018%22%3Efs%3C/text%3E%3C/svg%3E">
+<script>
+  // The visitor's last light/dark pick wins, then the system setting. Runs in <head> so the first paint is right.
+  try {
+    var saved = localStorage.getItem("fsrx-theme");
+    if (saved) document.documentElement.dataset.theme = saved;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
