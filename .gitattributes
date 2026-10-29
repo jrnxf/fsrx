@@ -1,0 +1,2 @@
+web/test/fixtures/* -text
+web/** linguist-detectable=false
