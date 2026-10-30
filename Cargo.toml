@@ -14,7 +14,7 @@ keywords = ["reading", "utility", "terminal", "cli", "fast"]
 [dependencies]
 ansi_term = "0.12.1"
 unicode-segmentation = "1.13"
-clap = { version = "3.2.8", features = ["derive"] }
+clap = { version = "4.6.7", features = ["derive"] }
 atty = "0.2.14"
 
 [profile.release]
