@@ -16,7 +16,7 @@
     "@vitejs/plugin-react": "6.1.2",
     "typescript": "7.0.2",
     "vite": "8.3.5",
-    "wrangler": "4.151.3"
+    "wrangler": "4.153.0"
   },
   "dependencies": {
     "react": "19.3.1",
